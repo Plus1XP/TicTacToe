@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="510" Width="510">
 
+    <Window.DataContext>
+        <local:LogicController/>
+    </Window.DataContext>
+
     <Window.Resources>
         <ResourceDictionary>
             <Style TargetType="Button" x:Key="XO">
@@ -20,6 +24,8 @@
                 <Setter Property="FontSize" Value="120"/>
                 <Setter Property="FontWeight" Value="Black"/>
                 <Setter Property="FontFamily" Value="Arial Rounded MT Bold"/>
+                <Setter Property="Command" Value="{Binding Command}"/>
+                <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Self}}"/>
             </Style>
         </ResourceDictionary>
     </Window.Resources>
@@ -42,10 +48,12 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="1"
-                   Margin="20,0,20,10" x:Name="ScoreBoard"/>
+                   Margin="20,0,20,10" x:Name="ScoreBoard" 
+                   Text="{Binding ScoreBoard}"/>
 
         <Button Grid.Column="1" Grid.Row="2" Style="{StaticResource XO}"
-                   x:Name="A1" Click="A1_Click"/>
+                x:Name="A1" Click="A1_Click"/>
+        <!--CommandParameter="{Binding ElementName=A1}"-->
 
         <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource XO}"
                    x:Name="A2" Click="A2_Click"/>

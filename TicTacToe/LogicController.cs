@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace TicTacToe
@@ -16,12 +18,15 @@ namespace TicTacToe
         GameWon,
         GameOver
     }
-    public class LogicController
+    public class LogicController : INotifyPropertyChanged
     {
         private Window mainWindow;
         private Hashtable gameGrid;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private StateMachine gameState;
+
+        private ICommand command;
 
         private const string crosses = "X";
         private const string noughts = "O";
@@ -31,11 +36,51 @@ namespace TicTacToe
 
         public LogicController()
         {
-            this.mainWindow = (MainWindow)System.Windows.Application.Current.MainWindow;
+            this.mainWindow = (MainWindow)Application.Current.MainWindow;
             this.gameGrid = new Hashtable();
             this.gameState = StateMachine.CrossesMove;
-            this.crossesScore = 0;
-            this.noughtsScore = 0;            
+            this.CrossesScore = 0;
+            this.NoughtsScore = 0;       
+        }
+
+        public int CrossesScore
+        {
+            get { return this.crossesScore; }
+            set
+            {
+                this.crossesScore = value;
+                this.NotifyPropertyChanged("ScoreBoard");
+            }
+        }
+        public int NoughtsScore
+        {
+            get { return this.noughtsScore; }
+            set
+            {
+                this.noughtsScore = value;
+                this.NotifyPropertyChanged("ScoreBoard");
+
+            }
+        }
+        public string ScoreBoard
+        {
+            get { return $"Score [{crosses}: {this.crossesScore} | {noughts}: {this.noughtsScore}]"; }
+        }
+
+        public ICommand Command
+        {
+            get
+            {
+                return this.command ?? (this.command = new RelayCommand<Button>( button => { this.ProcessMove(button);}));
+            }
+        }
+
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         public void ProcessMove(Button button)
@@ -112,16 +157,16 @@ namespace TicTacToe
         {
             if (button.Content.Equals(crosses))
             {
-                this.crossesScore++;
+                this.CrossesScore++;
                 MessageBox.Show($"{crosses} has won the game!");
             }
             else if (button.Content.Equals(noughts))
             {
-                this.noughtsScore++;
+                this.NoughtsScore++;
                 MessageBox.Show($"{noughts} has won the game!");
             }
             // Debug Scoreboard
-            Debug.Print($"{crosses}: {this.crossesScore} | {noughts}: {this.noughtsScore}");
+            Debug.Print($"{crosses}: {this.CrossesScore} | {noughts}: {this.NoughtsScore}");
         }
 
         private void GameOver()
