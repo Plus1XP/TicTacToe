@@ -10,8 +10,7 @@ namespace TicTacToe
         private readonly Predicate<T> canExecute;
         private readonly Action<T> execute;
 
-        public RelayCommand(Action<T> execute)
-           : this(execute, null)
+        public RelayCommand(Action<T> execute) : this(execute, null)
         {
             this.execute = execute;
         }
@@ -48,8 +47,7 @@ namespace TicTacToe
         private readonly Predicate<object> canExecute;
         private readonly Action<object> execute;
 
-        public RelayCommand(Action<object> execute)
-           : this(execute, null)
+        public RelayCommand(Action<object> execute) : this(execute, null)
         {
             this.execute = execute;
         }

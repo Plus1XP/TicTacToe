@@ -40,7 +40,7 @@ namespace TicTacToe
             this.gameGrid = new Hashtable();
             this.gameState = StateMachine.CrossesMove;
             this.CrossesScore = 0;
-            this.NoughtsScore = 0;       
+            this.NoughtsScore = 0;
         }
 
         public int CrossesScore
@@ -71,7 +71,7 @@ namespace TicTacToe
         {
             get
             {
-                return this.command ?? (this.command = new RelayCommand<Button>( button => { this.ProcessMove(button);}));
+                return this.command ?? (this.command = new RelayCommand<Button>(button => { this.ProcessMove(button); }));
             }
         }
 
