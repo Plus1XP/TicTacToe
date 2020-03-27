@@ -49,7 +49,7 @@
 
         <TextBlock Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="1"
                    Margin="20,0,20,10" x:Name="ScoreBoard" 
-                   Text="{Binding ScoreBoard}"/>
+                   HorizontalAlignment="Center" Text="{Binding ScoreBoard}"/>
 
         <Button Grid.Column="1" Grid.Row="2" Style="{StaticResource XO}"
                 x:Name="A1" Click="A1_Click"/>
