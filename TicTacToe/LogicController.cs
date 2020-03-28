@@ -11,25 +11,18 @@ using System.Windows.Media;
 
 namespace TicTacToe
 {
-    public enum StateMachine
-    {
-        CrossesMove,
-        NoughtsMove,
-        GameWon,
-        GameOver
-    }
     public class LogicController : INotifyPropertyChanged
-    {
-        private Window mainWindow;
-        private Hashtable gameGrid;
+    {        
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private StateMachine gameState;
+        private Window mainWindow;
+        private Hashtable gameBoard;
 
+        private GameState gameState;
         private ICommand command;
 
-        private const string crosses = "X";
-        private const string noughts = "O";
+        private const char crosses = 'X';
+        private const char noughts = 'O';
 
         private int crossesScore;
         private int noughtsScore;
@@ -37,8 +30,8 @@ namespace TicTacToe
         public LogicController()
         {
             this.mainWindow = (MainWindow)Application.Current.MainWindow;
-            this.gameGrid = new Hashtable();
-            this.gameState = StateMachine.CrossesMove;
+            this.gameBoard = new Hashtable();
+            this.gameState = GameState.CrossesMove;
             this.CrossesScore = 0;
             this.NoughtsScore = 0;
         }
@@ -59,7 +52,6 @@ namespace TicTacToe
             {
                 this.noughtsScore = value;
                 this.NotifyPropertyChanged("ScoreBoard");
-
             }
         }
         public string ScoreBoard
@@ -87,16 +79,16 @@ namespace TicTacToe
         {
             switch (this.gameState)
             {
-                case StateMachine.CrossesMove:
+                case GameState.CrossesMove:
                     this.SelectMove(button);
                     break;
-                case StateMachine.NoughtsMove:
+                case GameState.NoughtsMove:
                     this.SelectMove(button);
                     break;
-                case StateMachine.GameWon:
+                case GameState.GameWon:
                     this.GameWon(button);
                     break;
-                case StateMachine.GameOver:
+                case GameState.GameOver:
                     this.GameOver();
                     break;
                 default:
@@ -106,32 +98,34 @@ namespace TicTacToe
 
         private void GameStart()
         {
-            foreach (Button tb in FindVisualChildren<Button>(this.mainWindow))
+            foreach (Button button in ControlsHelper.FindVisualChildren<Button>(this.mainWindow))
             {
-                tb.Content = null;
+                button.Content = null;
             }
-            this.gameGrid.Clear();
-            this.gameState = StateMachine.CrossesMove;
+            this.gameBoard.Clear();
+            this.gameState = GameState.CrossesMove;
         }
 
         private void SelectMove(Button button)
         {
             if (button.Content == null)
             {
-                if (this.gameState == StateMachine.CrossesMove)
+                if (this.gameState == GameState.CrossesMove)
                 {
+                    button.Foreground = Brushes.LightGreen;
                     button.Content = crosses;
-                    this.gameState = StateMachine.NoughtsMove;
+                    this.gameState = GameState.NoughtsMove;
                 }
-                else if (this.gameState == StateMachine.NoughtsMove)
+                else if (this.gameState == GameState.NoughtsMove)
                 {
+                    button.Foreground = Brushes.LightSalmon;
                     button.Content = noughts;
-                    this.gameState = StateMachine.CrossesMove;
+                    this.gameState = GameState.CrossesMove;
                 }
                 this.UpdateHashTable();
                 this.CheckForGameOver();
                 this.CheckForWin();
-                this.ValidateMove(button);
+                this.CheckGameState(button);
             }
             else
             {
@@ -139,14 +133,14 @@ namespace TicTacToe
             }
         }
 
-        private void ValidateMove(Button button)
+        private void CheckGameState(Button button)
         {
-            if (this.gameState == StateMachine.GameWon)
+            if (this.gameState == GameState.GameWon)
             {
                 this.GameWon(button);
                 this.GameStart();
             }
-            else if (this.gameState == StateMachine.GameOver)
+            else if (this.gameState == GameState.GameOver)
             {
                 this.GameOver();
                 this.GameStart();
@@ -165,8 +159,6 @@ namespace TicTacToe
                 this.NoughtsScore++;
                 MessageBox.Show($"{noughts} has won the game!");
             }
-            // Debug Scoreboard
-            Debug.Print($"{crosses}: {this.CrossesScore} | {noughts}: {this.NoughtsScore}");
         }
 
         private void GameOver()
@@ -176,12 +168,56 @@ namespace TicTacToe
 
         private void UpdateHashTable()
         {
-            foreach (Button btn in FindVisualChildren<Button>(this.mainWindow))
+            foreach (Button button in ControlsHelper.FindVisualChildren<Button>(this.mainWindow))
             {
-                if (btn.Content != null && !this.gameGrid.ContainsKey(btn.Name))
+                if (button.Content != null && !this.gameBoard.ContainsKey(button.Name))
                 {
-                    this.gameGrid.Add(btn.Name, btn.Content);
+                    this.gameBoard.Add(button.Name, button.Content);
                 }
+            }
+        }
+
+        private void CheckForGameOver()
+        {
+            if (this.gameBoard.Count == 9)
+            {
+                this.gameState = GameState.GameOver;
+            }
+        }
+
+        private void CheckForWin()
+        {
+            if (this.CheckHashTableForMatch(this.gameBoard, "A1", "A2", "A3"))
+            {
+                this.gameState = GameState.GameWon;
+            }
+            else if (this.CheckHashTableForMatch(this.gameBoard, "B1", "B2", "B3"))
+            {
+                this.gameState = GameState.GameWon;
+            }
+            else if (this.CheckHashTableForMatch(this.gameBoard, "C1", "C2", "C3"))
+            {
+                this.gameState = GameState.GameWon;
+            }
+            else if (this.CheckHashTableForMatch(this.gameBoard, "A1", "B1", "C1"))
+            {
+                this.gameState = GameState.GameWon;
+            }
+            else if (this.CheckHashTableForMatch(this.gameBoard, "A2", "B2", "C2"))
+            {
+                this.gameState = GameState.GameWon;
+            }
+            else if (this.CheckHashTableForMatch(this.gameBoard, "A3", "B3", "C3"))
+            {
+                this.gameState = GameState.GameWon;
+            }
+            else if (this.CheckHashTableForMatch(this.gameBoard, "A1", "B2", "C3"))
+            {
+                this.gameState = GameState.GameWon;
+            }
+            else if (this.CheckHashTableForMatch(this.gameBoard, "A3", "B2", "C1"))
+            {
+                this.gameState = GameState.GameWon;
             }
         }
 
@@ -198,70 +234,6 @@ namespace TicTacToe
             else
             {
                 return false;
-            }
-        }
-
-        private void CheckForGameOver()
-        {
-            if (this.gameGrid.Count == 9)
-            {
-                this.gameState = StateMachine.GameOver;
-            }
-        }
-
-        private void CheckForWin()
-        {
-            if (this.CheckHashTableForMatch(this.gameGrid, "A1", "A2", "A3"))
-            {
-                this.gameState = StateMachine.GameWon;
-            }
-            else if (this.CheckHashTableForMatch(this.gameGrid, "B1", "B2", "B3"))
-            {
-                this.gameState = StateMachine.GameWon;
-            }
-            else if (this.CheckHashTableForMatch(this.gameGrid, "C1", "C2", "C3"))
-            {
-                this.gameState = StateMachine.GameWon;
-            }
-            else if (this.CheckHashTableForMatch(this.gameGrid, "A1", "B1", "C1"))
-            {
-                this.gameState = StateMachine.GameWon;
-            }
-            else if (this.CheckHashTableForMatch(this.gameGrid, "A2", "B2", "C2"))
-            {
-                this.gameState = StateMachine.GameWon;
-            }
-            else if (this.CheckHashTableForMatch(this.gameGrid, "A3", "B3", "C3"))
-            {
-                this.gameState = StateMachine.GameWon;
-            }
-            else if (this.CheckHashTableForMatch(this.gameGrid, "A1", "B2", "C3"))
-            {
-                this.gameState = StateMachine.GameWon;
-            }
-            else if (this.CheckHashTableForMatch(this.gameGrid, "A3", "B2", "C1"))
-            {
-                this.gameState = StateMachine.GameWon;
-            }
-        }
-
-        private static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
-        {
-            if (depObj != null)
-            {
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-                {
-                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                    if (child != null && child is T)
-                    {
-                        yield return (T)child;
-                    }
-
-                    foreach (T childOfChild in FindVisualChildren<T>(child))
-                    {
-                        yield return childOfChild;
-                    }
-                }
             }
         }
     }
