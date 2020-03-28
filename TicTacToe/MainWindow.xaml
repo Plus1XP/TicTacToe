@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TicTacToe"
         mc:Ignorable="d"
-        Title="MainWindow" Height="510" Width="510">
+        ResizeMode="NoResize"
+        Title="MainWindow" Height="495" Width="490">
 
     <Window.DataContext>
         <local:LogicController/>
@@ -33,51 +34,51 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="1"
+        <TextBlock Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="0"
                    Margin="20,0,20,10" x:Name="ScoreBoard" 
                    HorizontalAlignment="Center" Text="{Binding ScoreBoard}"/>
 
-        <Button Grid.Column="1" Grid.Row="2" Style="{StaticResource XO}"
-                x:Name="A1" Click="A1_Click"/>
+        <Button Grid.Column="1" Grid.Row="1" Style="{StaticResource XO}"
+                x:Name="A1"/>
         <!--CommandParameter="{Binding ElementName=A1}"-->
 
-        <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource XO}"
-                   x:Name="A2" Click="A2_Click"/>
+        <Button Grid.Column="1" Grid.Row="2" Style="{StaticResource XO}"
+                   x:Name="A2"/>
 
-        <Button Grid.Column="1" Grid.Row="4" Style="{StaticResource XO}"
-                   x:Name="A3" Click="A3_Click"/>
+        <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource XO}"
+                   x:Name="A3"/>
+
+        <Button Grid.Column="2" Grid.Row="1" Style="{StaticResource XO}"
+                x:Name="B1"/>
 
         <Button Grid.Column="2" Grid.Row="2" Style="{StaticResource XO}"
-                x:Name="B1" Click="B1_Click"/>
+                x:Name="B2"/>
 
         <Button Grid.Column="2" Grid.Row="3" Style="{StaticResource XO}"
-                x:Name="B2" Click="B2_Click"/>
+                x:Name="B3"/>
 
-        <Button Grid.Column="2" Grid.Row="4" Style="{StaticResource XO}"
-                x:Name="B3" Click="B3_Click"/>
+        <Button Grid.Column="3" Grid.Row="1" Style="{StaticResource XO}"
+                x:Name="C1"/>
 
         <Button Grid.Column="3" Grid.Row="2" Style="{StaticResource XO}"
-                x:Name="C1" Click="C1_Click"/>
+                x:Name="C2"/>
 
         <Button Grid.Column="3" Grid.Row="3" Style="{StaticResource XO}"
-                x:Name="C2" Click="C2_Click"/>
-
-        <Button Grid.Column="3" Grid.Row="4" Style="{StaticResource XO}"
-                x:Name="C3" Click="C3_Click"/>
+                x:Name="C3"/>
         <!--Content="{Binding Path=Text}"/>-->
     </Grid>
 </Window>

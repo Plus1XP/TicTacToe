@@ -28,50 +28,5 @@ namespace TicTacToe
             //this.logicController = new LogicController();
             //this.DataContext = this.logicController;
         }
-
-        private void A1_Click(object sender, RoutedEventArgs e)
-        {
-            //this.logicController.ProcessMove((Button)sender);
-        }
-
-        private void A2_Click(object sender, RoutedEventArgs e)
-        {
-            //this.logicController.ProcessMove((Button)sender);
-        }
-
-        private void A3_Click(object sender, RoutedEventArgs e)
-        {
-            //this.logicController.ProcessMove((Button)sender);
-        }
-
-        private void B1_Click(object sender, RoutedEventArgs e)
-        {
-            //this.logicController.ProcessMove((Button)sender);
-        }
-
-        private void B2_Click(object sender, RoutedEventArgs e)
-        {
-            //this.logicController.ProcessMove((Button)sender);
-        }
-
-        private void B3_Click(object sender, RoutedEventArgs e)
-        {
-            //this.logicController.ProcessMove((Button)sender);
-        }
-
-        private void C1_Click(object sender, RoutedEventArgs e)
-        {
-            //this.logicController.ProcessMove((Button)sender);
-        }
-
-        private void C2_Click(object sender, RoutedEventArgs e)
-        {
-            //this.logicController.ProcessMove((Button)sender);
-        }
-
-        private void C3_Click(object sender, RoutedEventArgs e)
-        {
-            //this.logicController.ProcessMove((Button)sender);
-        }
     }
 }
