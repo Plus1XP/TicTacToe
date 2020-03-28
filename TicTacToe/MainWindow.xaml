@@ -48,9 +48,21 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
+        <TextBlock Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="0"
+                   Margin="20,0,20,5" x:Name="CrossBoard" 
+                   HorizontalAlignment="Left" Foreground="LightGreen"
+                   FontWeight="DemiBold" FontSize="16"
+                   Text="{Binding CrossBoard}"/>       
+
         <TextBlock Grid.Column="1" Grid.ColumnSpan="4" Grid.Row="0"
                    Margin="20,0,20,10" x:Name="ScoreBoard" 
                    HorizontalAlignment="Center" Text="{Binding ScoreBoard}"/>
+
+        <TextBlock Grid.Column="3" Grid.ColumnSpan="1" Grid.Row="0"
+                   Margin="20,0,20,5" x:Name="NoughtBoard" 
+                   HorizontalAlignment="Left" Foreground="LightSalmon"
+                   FontWeight="DemiBold" FontSize="16"
+                   Text="{Binding NoughtBoard}"/>
 
         <Button Grid.Column="1" Grid.Row="1" Style="{StaticResource XO}"
                 x:Name="A1"/>

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,7 +8,7 @@ using System.Windows.Media;
 namespace TicTacToe
 {
     public class LogicController : INotifyPropertyChanged
-    {        
+    {
         public event PropertyChangedEventHandler PropertyChanged;
 
         private Window mainWindow;
@@ -20,6 +16,9 @@ namespace TicTacToe
 
         private GameState gameState;
         private ICommand command;
+
+        private string crossBoard;
+        private string noughtBoard;
 
         private const char crosses = 'X';
         private const char noughts = 'O';
@@ -31,9 +30,10 @@ namespace TicTacToe
         {
             this.mainWindow = (MainWindow)Application.Current.MainWindow;
             this.gameBoard = new Hashtable();
-            this.gameState = GameState.CrossesMove;
+            //this.gameState = GameState.CrossesMove;
             this.CrossesScore = 0;
             this.NoughtsScore = 0;
+            this.GameStart();
         }
 
         public int CrossesScore
@@ -54,6 +54,29 @@ namespace TicTacToe
                 this.NotifyPropertyChanged("ScoreBoard");
             }
         }
+
+        public string CrossBoard
+        {
+            get { return this.crossBoard; }
+            set
+            {
+                this.crossBoard = value;
+                this.NotifyPropertyChanged("CrossBoard");
+            }
+
+        }
+
+        public string NoughtBoard
+        {
+            get { return this.noughtBoard; }
+            set
+            {
+                this.noughtBoard = value;
+                this.NotifyPropertyChanged("NoughtBoard");
+            }
+
+        }
+
         public string ScoreBoard
         {
             get { return $"Score [{crosses}: {this.crossesScore} | {noughts}: {this.noughtsScore}]"; }
@@ -104,6 +127,8 @@ namespace TicTacToe
             }
             this.gameBoard.Clear();
             this.gameState = GameState.CrossesMove;
+            this.CrossBoard = $"{crosses} moves...";
+            this.NoughtBoard = null;
         }
 
         private void SelectMove(Button button)
@@ -115,12 +140,16 @@ namespace TicTacToe
                     button.Foreground = Brushes.LightGreen;
                     button.Content = crosses;
                     this.gameState = GameState.NoughtsMove;
+                    this.NoughtBoard = $"{noughts} moves...";
+                    this.CrossBoard = null;
                 }
                 else if (this.gameState == GameState.NoughtsMove)
                 {
                     button.Foreground = Brushes.LightSalmon;
                     button.Content = noughts;
                     this.gameState = GameState.CrossesMove;
+                    this.CrossBoard = $"{crosses} moves...";
+                    this.NoughtBoard = null;
                 }
                 this.UpdateHashTable();
                 this.CheckForGameOver();
