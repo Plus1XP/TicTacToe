@@ -4,10 +4,10 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Authors>Aleuts</Authors>
-    <Company>github.com/aleuts</Company>
+    <Authors>Plus1XP</Authors>
+    <Company>https://github.com/Plus1XP</Company>
     <Description>Quick and Dirty Noughts and Crosses</Description>
-    <Copyright>github.com/aleuts</Copyright>
+    <Copyright>Copyright (c) Plus1XP</Copyright>
   </PropertyGroup>
 
 </Project>
